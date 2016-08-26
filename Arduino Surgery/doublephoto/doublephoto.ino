@@ -1,3 +1,6 @@
+/*
+ * Utilizes two photo resistor to measure distance
+ */
 int photo1 = 0, photo2 = 1;
 double Reading[15];
 double read1, read2;

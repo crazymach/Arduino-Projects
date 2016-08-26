@@ -1,3 +1,11 @@
+/*
+ * Final Product of the Arudino Surgery https://www.youtube.com/watch?v=Jpgerv-YYAc
+ * Same program as the 3-d hall effect sensor program but with JSON included as well as 
+ * Ultrasonic sensors
+ * JSON added for future bluetooth communication for the program
+ * 
+ */
+
 #include <ArduinoJson.h>
 #include<math.h>
 
@@ -95,7 +103,7 @@ void loop() {
 
 
 
-void jsonGenerate(double ping1, double ping2, double pingAvg){
+void jsonGenerate(double ping1, double ping2, double pingAvg){//JSON used to send packets of the sensor data
   String Str1 = String(ping1) + " m";
   String Str2 = String(ping2) + " m";
   String StrAvg = String(pingAvg) + " m";
