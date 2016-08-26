@@ -1,9 +1,15 @@
+/*
+ * This sketch measures the magnetic field strength in proximity to 
+ * a Hall effect sensor. The program interprepts the values into coordinates
+ * in a 3-d space, and processing can later take the values and 
+ * place it in the 3-d coordinate system
+ */
 #include<math.h>
 #define NUM_READS 100
 
 
-int Zaxis = 0, botL = 1, botR = 2,topR = 3, topL = 4, top = 5 ;
-double NoZ, NobotL,NobotR, NotopR, NotopL, Notop;
+int Zaxis = 0, botL = 1, botR = 2,topR = 3, topL = 4, top = 5 ; //Analog Pins for the Hall effect sensors
+double NoZ, NobotL,NobotR, NotopR, NotopL, Notop; //No magnet in the presence
 double magnetZ,magnetbotL, magnetbotR, magnettopL,magnettopR,magnettop;
 int readingZ,readingbotL,readingbotR,readingtopR,readingtopL, readingtop;
 int inByte = 0;
@@ -18,14 +24,13 @@ void setup() {
   NotopR = readSensor(topR);
   NotopL = readSensor(topL);
   Notop  = readSensor(top);
-  while(!Serial){
+  while(!Serial){     //Establishes contact with Processing or whatever Serial Contact
     ;
   }
   establishContact();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   if(Serial.available() > 0){
     inByte = Serial.read();
     magnetZ    = readSensor(Zaxis);
@@ -35,7 +40,7 @@ void loop() {
     magnettopR = readSensor(topL);
     magnettop  = readSensor(top);
 
-    readingZ  =   abs(NoZ - magnetZ);
+    readingZ  =   abs(NoZ - magnetZ);//Subtracts No magnet from magnet field strength to give coordiantes
     readingbotL = abs(NobotL - magnetbotL);
     readingbotR = abs(NobotR - magnetbotR);
     readingtopR = abs(NotopR - magnettopL);
@@ -43,13 +48,13 @@ void loop() {
     readingtop  = abs(Notop - magnettop);
 
 
-//    Serial.print(readingZ); Serial.print("\t");
+//    Serial.print(readingZ); Serial.print("\t"); //Uncomment to see raw values
 //    Serial.print(readingbotl); Serial.print("\t");
 //    Serial.print(readingbotr); Serial.print("\t");
 //    Serial.print(readingtopr); Serial.print("\t");
 //    Serial.print(readingtopl); Serial.print("\t");
 //    Serial.println(readingtop);
-    Serial.write(readingZ);
+    Serial.write(readingZ); //Writes to the Serial Monitor
     Serial.write(readingbotL);
     Serial.write(readingbotR);
     Serial.write(readingtopR);
@@ -58,7 +63,7 @@ void loop() {
   }
 }
 
-double readSensor(int sensorpin){
+double readSensor(int sensorpin){ //Median Filtering to get consistent values
    // read multiple values and sort them to take the mode
    int sortedValues[NUM_READS];
    for(int i=0;i<NUM_READS;i++){
@@ -91,7 +96,7 @@ double readSensor(int sensorpin){
 }
 
 
-void establishContact() {
+void establishContact() { //Method for fetch and response for Serial Monitor
   while (Serial.available() <= 0) {
     Serial.print('A');   // send a capital A
     delay(300);
