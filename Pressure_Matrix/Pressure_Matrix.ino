@@ -1,21 +1,28 @@
-#include<math.h>
 #define NUM_READS 50
-int velo = 0;
+
+
+int velo0 = 0, velo1 = 1, velo2 = 2, velo3 = 3;
+
 
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  double sensorValue = readSensor(velo);
-  Serial.println(sensorValue);
-  delay(50);
+  int read0 = readSensor(velo0);
+  int read1 = readSensor(velo1);
+  int read2 = readSensor(velo2);
+  int read3 = readSensor(velo3);
+  Serial.print(read0,DEC); Serial.print("\t");
+  Serial.print(read1,DEC); Serial.print("\t");
+  Serial.print(read2,DEC); Serial.print("\t");
+  Serial.println(read3,DEC);
+
 }
-double readSensor(int sensorpin){
+
+int readSensor(int sensorpin){
    // read multiple values and sort them to take the mode
    int sortedValues[NUM_READS];
    for(int i=0;i<NUM_READS;i++){
